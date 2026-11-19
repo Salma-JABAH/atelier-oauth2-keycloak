@@ -1,0 +1,288 @@
+{
+  "info": {
+    "name": "Atelier OAuth2 - Demandes API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "token_alice",
+      "value": ""
+    },
+    {
+      "key": "token_bob",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Public (sans token) - 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8081/api/public",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "public"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Test 4 : demandes sans token - 401",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8081/api/demandes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "demandes"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Alice : mes demandes - 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_alice}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/demandes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "demandes"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Alice : creer une demande - 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_alice}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/demandes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "demandes"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"objet\":\"Attestation de scolarite\"}"
+        }
+      }
+    },
+    {
+      "name": "Alice : profil - 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_alice}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/profil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "profil"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Test 5 : admin avec Alice - 403",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_alice}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/admin/demandes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "admin",
+            "demandes"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Test 6 : admin avec Bob - 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_bob}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/admin/demandes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "admin",
+            "demandes"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Bob : valider la demande 1 - 200",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_bob}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/admin/demandes/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "admin",
+            "demandes",
+            "1"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"statut\":\"VALIDEE\"}"
+        }
+      }
+    },
+    {
+      "name": "Bob : refuser la demande 1 - 200",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_bob}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/admin/demandes/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "admin",
+            "demandes",
+            "1"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"statut\":\"REFUSEE\"}"
+        }
+      }
+    },
+    {
+      "name": "Alice : valider (interdit) - 403",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_alice}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8081/api/admin/demandes/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "admin",
+            "demandes",
+            "1"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"statut\":\"VALIDEE\"}"
+        }
+      }
+    }
+  ]
+}
